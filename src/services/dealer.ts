@@ -60,14 +60,18 @@ export default class Dealer {
     this.score = [0];
     for (let i = 0; i < this.history.length; i++) {
       const card = this.history[i];
-      //* Para cada carta, ele vai somar o valor dela
-      this.score[0] +=
-        card.value === 'ACE' ? 1 :
-        card.value === 'JACK' || card.value === 'QUEEN' || card.value === 'KING' ? 10 :
-        parseInt(card.value);
+      //* Para cada carta, ele vai somar o valor dela em todos os scores
+      this.score.forEach((value, index) => {
+        this.score[index] +=
+          card.value === 'ACE' ? 1 :
+          card.value === 'JACK' || card.value === 'QUEEN' || card.value === 'KING' ? 10 :
+          parseInt(card.value);
+      });
+
       
       //* Se a carta for um Ás ele adiciona um novo resultado com o valor 1
-      if(card.value === 'ACE') this.score.push(this.score[0] + 10);
+      if(card.value === 'ACE' && this.score.length == 1)
+          this.score.push(this.score[0] + 10);
     }
 
     //* Remove os valores maiores que 21
@@ -76,6 +80,7 @@ export default class Dealer {
   }
 
   getScore(): string {
+    //* Atualiza o placar em numbers
     const score = this.updateScore();
 
     //* Se não houver cartas, ele retorna PERDEU, mas se algum é valor é 21, ele retorna VENCEU
@@ -85,8 +90,7 @@ export default class Dealer {
     let answer = '';
     score.forEach((value, index) => 
       answer += value + (index < score.length - 1 ? ' ou ' : ''));
-    
+
     return answer;
   }
-
 }
