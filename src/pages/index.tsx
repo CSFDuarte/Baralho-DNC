@@ -34,13 +34,13 @@ function App() {
   return (
     <Container>
       {/* BARALHO DE CARTAS */}
-      <Grid container justifyContent="center" alignItems="center" direction={'column'}>
+      <Grid container justifyContent="center" alignItems="center" direction={'column'} my={1}>
         <Grid item my={2}>
           <Typography variant="h4" align="center" my={1}>
-            Seu baralho
+            Simulador de baralhos
           </Typography>
-          <Typography variant="h6" align="center">
-            ID: {deck.deck_id} - Restantes: {deck.remaining}
+          <Typography variant="h5" align="center">
+            DNC Treinamentos
           </Typography>
         </Grid>
         
@@ -48,17 +48,22 @@ function App() {
           {deck.deck_id === '' ? 'Novo baralho' : deck.shuffled ? 'Embaralhar novamente' : 'Embaralhar'}
         </Button>
         {deck.shuffled && (
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <img src={CARD_BACKGROUND} style={{ maxWidth: '100%', borderRadius: '5px' }} />
-          </div>
+          <>
+            <Container style={{ textAlign: 'center', marginTop: '20px' }}>
+              <img src={CARD_BACKGROUND} style={{ maxWidth: '100%', borderRadius: '5px' }} />
+              <Typography variant="h6" align="center" hidden={deck.deck_id === ''}>
+                ID: {deck.deck_id} - Cartas restantes: {deck.remaining}
+              </Typography>
+            </Container>
+            <Grid item my={2}>
+              <Button variant="contained" onClick={drawCard} disabled={!deck.shuffled} style={{ margin: 'auto'}}>
+                Comprar carta
+              </Button>
+            </Grid>
+          </>
         )}
 
         {/* CARTA COMPRADA */}
-        <Grid item my={2}>
-          <Button variant="contained" onClick={drawCard} disabled={!deck.shuffled} style={{ margin: 'auto'}}>
-            Comprar carta
-          </Button>
-        </Grid>
         {card && (
           <>
             <Typography variant="h4" align="center">
