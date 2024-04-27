@@ -29,6 +29,7 @@ export default class Dealer {
     shuffled: false,
   };
 
+  score: number[] = [0];
   history: ICard[] = [];
 
   async shuffle(): Promise<IDeck> {
@@ -40,6 +41,7 @@ export default class Dealer {
     this.deck.deck_id = response.data.deck_id;
     this.deck.remaining = response.data.remaining;
     this.deck.shuffled = true;
+    this.history = [];
 
     return this.deck;
   }
@@ -50,7 +52,41 @@ export default class Dealer {
     return response.data.cards[0];
   }
 
-  async getHistory(): Promise<ICard[]> {
+  getHistory(): ICard[] {
     return this.history;
   }
+
+  updateScore(): number[] {
+    this.score = [0];
+    for (let i = 0; i < this.history.length; i++) {
+      const card = this.history[i];
+      //* Para cada carta, ele vai somar o valor dela
+      this.score[0] +=
+        card.value === 'ACE' ? 1 :
+        card.value === 'JACK' || card.value === 'QUEEN' || card.value === 'KING' ? 10 :
+        parseInt(card.value);
+      
+      //* Se a carta for um Ás ele adiciona um novo resultado com o valor 1
+      if(card.value === 'ACE') this.score.push(this.score[0] + 10);
+    }
+
+    //* Remove os valores maiores que 21
+    this.score = this.score.filter(value => value <= 21);
+    return this.score;
+  }
+
+  getScore(): string {
+    const score = this.updateScore();
+
+    //* Se não houver cartas, ele retorna PERDEU, mas se algum é valor é 21, ele retorna VENCEU
+    if (score.length === 0) return 'PERDEU';
+    if (score.includes(21)) return 'VENCEU';
+
+    let answer = '';
+    score.forEach((value, index) => 
+      answer += value + (index < score.length - 1 ? ' ou ' : ''));
+    
+    return answer;
+  }
+
 }

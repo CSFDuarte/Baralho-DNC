@@ -13,12 +13,14 @@ function App() {
     shuffled: false,
   });
   const [history, setHistory] = useState<ICard[]>([]);
+  const [score, setScore] = useState<string>('0');
 
   const shuffleDeck = async (): Promise<void> => {
     try {
       setDeck(await dealer.shuffle());
       setCard(null);
       setHistory([]);
+      setScore('0');
     } catch (error) {
       console.error('Falha ao embaralhar:', error);
     }
@@ -29,6 +31,7 @@ function App() {
       setDeck({ ...deck, remaining: deck.remaining - 1, shuffled: deck.remaining > 1})
       setCard(await dealer.draw());
       setHistory(await dealer.getHistory());
+      setScore(await dealer.getScore());
     } catch (error) {
       console.error('Falha ao comprar carta:', error);
     }
@@ -37,11 +40,11 @@ function App() {
   return (
     <Container>
       <Grid container justifyContent="center" alignItems="flex-start" direction={'row'} my={1}>
-        {/* BARALHO DE CARTAS */}
         <Grid item justifyContent="center" alignItems="flex-start" direction={'column'} my={2} sm={12} md={6}>
+          {/* CABEÇALHO */}
           <Grid container direction={"column"}>
             <Typography variant="h4" align="center">
-              Simulador de baralhos
+              Simulador de 21
             </Typography>
             <Typography variant="h5" align="center">
               DNC Treinamentos
@@ -50,16 +53,20 @@ function App() {
               {deck.deck_id === '' ? 'Novo baralho' : deck.shuffled ? 'Embaralhar novamente' : 'Embaralhar'}
             </Button>
           </Grid>
-          
+
+          {/* BARALHO DE CARTAS */}
           {deck.shuffled && (
             <Container style={{ textAlign: 'center' }}>
               <img src={CARD_BACKGROUND} style={{ maxWidth: '100%', borderRadius: '5px' }} />
-              <Typography variant="h6" align="center" hidden={deck.deck_id === ''}>
-                ID: {deck.deck_id} - Cartas restantes: {deck.remaining}
+              <Typography variant="h6" align="center">
+                Pontuação: {score}
               </Typography>
-              <Button variant="contained" onClick={drawCard} disabled={!deck.shuffled} style={{ margin: 'auto'}}>
+              <Typography variant="h6" align="center">
+                Cartas compradas: {52 - deck.remaining}
+              </Typography>
+              {(score === 'VENCEU' || score === 'PERDEU' || <Button variant="contained" onClick={drawCard} disabled={!deck.shuffled} style={{ margin: 'auto'}}>
                 Comprar carta
-              </Button>
+              </Button>)}
             </Container>
           )}
         </Grid>
@@ -70,7 +77,7 @@ function App() {
               Carta comprada
             </Typography>
             <Container style={{ textAlign: 'center', marginTop: '20px' }}>
-              <img src={card.image} alt={card.code} style={{ maxWidth: '100%', borderRadius: '5px' }} />
+              <img src={card.image} alt={card.code} style={{ maxWidth: '100px', borderRadius: '5px' }} />
               <Typography variant="h6" align="center">
                 {translateValue(card.value) + " de " + translateSuit(card.suit)}
               </Typography>
