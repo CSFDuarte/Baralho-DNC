@@ -12,11 +12,13 @@ function App() {
     remaining: 0,
     shuffled: false,
   });
+  const [history, setHistory] = useState<ICard[]>([]);
 
   const shuffleDeck = async (): Promise<void> => {
     try {
       setDeck(await dealer.shuffle());
       setCard(null);
+      setHistory([]);
     } catch (error) {
       console.error('Falha ao embaralhar:', error);
     }
@@ -26,6 +28,7 @@ function App() {
     try {
       setDeck({ ...deck, remaining: deck.remaining - 1, shuffled: deck.remaining > 1})
       setCard(await dealer.draw());
+      setHistory(await dealer.getHistory());
     } catch (error) {
       console.error('Falha ao comprar carta:', error);
     }
@@ -77,6 +80,22 @@ function App() {
             </Container>
           </>
         )}
+
+        {/* HISTÓRICO DE CARTAS COMPRADAS */}
+        <Typography variant="h4" align="center">
+          Histórico de cartas compradas
+        </Typography>
+        <Grid item my={2}>
+          <Container style={{ textAlign: 'center', marginTop: '20px' }}>
+            <Grid container justifyContent="center" alignItems="center" direction={'row'} my={1}>
+              {history.map((card: ICard, index: number) => (
+                <Grid item key={index}>
+                  <img src={card.image} alt={card.code} style={{ maxWidth: '100px', borderRadius: '5px' }} />
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </Grid>
       </Grid>
     </Container>
   );

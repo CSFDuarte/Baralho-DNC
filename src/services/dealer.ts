@@ -29,6 +29,8 @@ export default class Dealer {
     shuffled: false,
   };
 
+  history: ICard[] = [];
+
   async shuffle(): Promise<IDeck> {
     const response = 
       this.deck.deck_id === '' ?
@@ -44,6 +46,11 @@ export default class Dealer {
 
   async draw(): Promise<ICard> {
     const response = await api.get(`deck/${this.deck.deck_id}/draw/?count=1`);
+    this.history.push(response.data.cards[0]);
     return response.data.cards[0];
+  }
+
+  async getHistory(): Promise<ICard[]> {
+    return this.history;
   }
 }
