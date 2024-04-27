@@ -36,39 +36,36 @@ function App() {
 
   return (
     <Container>
-      {/* BARALHO DE CARTAS */}
-      <Grid container justifyContent="center" alignItems="center" direction={'column'} my={1}>
-        <Grid item my={2}>
-          <Typography variant="h4" align="center" my={1}>
-            Simulador de baralhos
-          </Typography>
-          <Typography variant="h5" align="center">
-            DNC Treinamentos
-          </Typography>
-        </Grid>
-        
-        <Button variant="contained" onClick={shuffleDeck} style={{ margin: 'auto' }}>
-          {deck.deck_id === '' ? 'Novo baralho' : deck.shuffled ? 'Embaralhar novamente' : 'Embaralhar'}
-        </Button>
-        {deck.shuffled && (
-          <>
-            <Container style={{ textAlign: 'center', marginTop: '20px' }}>
+      <Grid container justifyContent="center" alignItems="flex-start" direction={'row'} my={1}>
+        {/* BARALHO DE CARTAS */}
+        <Grid item justifyContent="center" alignItems="flex-start" direction={'column'} my={2} sm={12} md={6}>
+          <Grid container direction={"column"}>
+            <Typography variant="h4" align="center">
+              Simulador de baralhos
+            </Typography>
+            <Typography variant="h5" align="center">
+              DNC Treinamentos
+            </Typography>
+            <Button variant="contained" onClick={shuffleDeck} style={{ margin: 'auto' }}>
+              {deck.deck_id === '' ? 'Novo baralho' : deck.shuffled ? 'Embaralhar novamente' : 'Embaralhar'}
+            </Button>
+          </Grid>
+          
+          {deck.shuffled && (
+            <Container style={{ textAlign: 'center' }}>
               <img src={CARD_BACKGROUND} style={{ maxWidth: '100%', borderRadius: '5px' }} />
               <Typography variant="h6" align="center" hidden={deck.deck_id === ''}>
                 ID: {deck.deck_id} - Cartas restantes: {deck.remaining}
               </Typography>
-            </Container>
-            <Grid item my={2}>
               <Button variant="contained" onClick={drawCard} disabled={!deck.shuffled} style={{ margin: 'auto'}}>
                 Comprar carta
               </Button>
-            </Grid>
-          </>
-        )}
-
-        {/* CARTA COMPRADA */}
-        {card && (
-          <>
+            </Container>
+          )}
+        </Grid>
+        <Grid item justifyContent="center" alignItems="center" direction={'column'} my={2} sm={12} md={6}>
+          {/* CARTA COMPRADA */}
+          {card && (<>
             <Typography variant="h4" align="center">
               Carta comprada
             </Typography>
@@ -78,23 +75,21 @@ function App() {
                 {translateValue(card.value) + " de " + translateSuit(card.suit)}
               </Typography>
             </Container>
-          </>
-        )}
+          </>)}
 
-        {/* HISTÓRICO DE CARTAS COMPRADAS */}
-        <Typography variant="h4" align="center">
-          Histórico de cartas compradas
-        </Typography>
-        <Grid item my={2}>
-          <Container style={{ textAlign: 'center', marginTop: '20px' }}>
-            <Grid container justifyContent="center" alignItems="center" direction={'row'} my={1}>
+          {/* HISTÓRICO DE CARTAS COMPRADAS */}
+          {history.length > 0 && (<>
+            <Typography variant="h4" align="center">
+              Histórico de cartas
+            </Typography>
+            <Grid container justifyContent="center" alignItems="center" direction={'row'} my={2}>
               {history.map((card: ICard, index: number) => (
                 <Grid item key={index}>
                   <img src={card.image} alt={card.code} style={{ maxWidth: '100px', borderRadius: '5px' }} />
                 </Grid>
               ))}
             </Grid>
-          </Container>
+          </>)}
         </Grid>
       </Grid>
     </Container>
