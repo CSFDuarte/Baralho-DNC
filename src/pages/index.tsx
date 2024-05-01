@@ -44,7 +44,7 @@ function App() {
           {/* CABEÇALHO */}
           <Grid container direction={"column"}>
             <Typography variant="h4" align="center">
-              Simulador de 21
+              Simulador de Blackjack
             </Typography>
             <Typography variant="h5" align="center">
               DNC Treinamentos
@@ -86,8 +86,8 @@ function App() {
 
           {/* HISTÓRICO DE CARTAS COMPRADAS */}
           {history.length > 0 && (<>
-            <Typography variant="h4" align="center">
-              Histórico de cartas
+            <Typography variant="h4" align="center" my={1}>
+              Sua mão
             </Typography>
             <Grid container justifyContent="center" alignItems="center" direction={'row'} my={2}>
               {history.map((card: ICard, index: number) => (
