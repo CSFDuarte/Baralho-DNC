@@ -1,19 +1,18 @@
 import { CardSuit, CardValue } from "./dealer";
 
-export function translateSuit(suit: CardSuit): string {
-  const translations: Record<CardSuit, string> = {
-    HEARTS: 'Copas',
-    DIAMONDS: 'Ouros',
-    CLUBS: 'Paus',
-    SPADES: 'Espadas',
-  };
+const suitTranslations: Record<CardSuit, string> = {
+  HEARTS: 'Copas',
+  DIAMONDS: 'Ouros',
+  CLUBS: 'Paus',
+  SPADES: 'Espadas',
+};
 
-  return translations[suit];
+export function translateSuit(suit: CardSuit): string {
+  return suitTranslations[suit];
 }
 
-export function translateValue(suit: CardValue): string {
-  const translations: Record<CardValue, string> = {
-    ACE: 'Ás',
+const valueTranslations: Record<CardValue, string> = {
+  ACE: 'Ás',
     2: 'Dois',
     3: 'Três',
     4: 'Quatro',
@@ -26,7 +25,8 @@ export function translateValue(suit: CardValue): string {
     JACK: 'Valete',
     QUEEN: 'Dama',
     KING: 'Rei',
-  };
+};
 
-  return translations[suit];
+export function translateValue(value: CardValue): string {
+  return valueTranslations[value];
 }

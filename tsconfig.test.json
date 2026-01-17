@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "module": "commonjs",
+    "outDir": "dist"
+  },
+  "include": [
+    "src/services/dealer.ts",
+    "src/services/translation.ts",
+    "src/services/translation.test.ts"
+  ]
+}
